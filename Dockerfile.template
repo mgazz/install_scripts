@@ -1,0 +1,20 @@
+# vim:set ft=dockerfile:
+FROM ubuntu:%%SUITE%%
+
+
+RUN apt-get update && \
+      apt-get -y install sudo
+
+RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+
+
+RUN useradd -ms /bin/bash test
+
+RUN adduser test sudo
+
+ADD ./%%MODULE%%_install.sh /home/test/./%%MODULE%%_install.sh
+
+USER test
+WORKDIR /home/test
+
+CMD ["bash","/home/test/%%MODULE%%_install.sh"]
